@@ -87,14 +87,17 @@ class FileFinder:
                                     
             # total_needed_episodes = sum(len(episodes) for episodes in needed_episodes.values())
             # matched_episodes = sum(len(files) for files in matched_files.values())
-                    
-            if set(needed_episodes).issubset(matched_files):
+
+            needed_episodes_set = {(season, episode) for season, episodes in needed_episodes.items() for episode in episodes}
+            if needed_episodes_set.issubset(matched_files.keys()):
                 for key, files in matched_files.items():
                     season_number, episode_number = key
                     for file in files:
                         if not file or "sample" in file[self.filename_attr].lower():
                             continue
                         return_files.append(file)
+            else:
+                not_matched_episodes = needed_episodes_set - matched_files.keys()
                                     
         if item.type == "season":
             acceptable_states = [States.Indexed, States.Scraped, States.Unknown, States.Failed, States.PartiallyCompleted]
