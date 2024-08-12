@@ -96,8 +96,6 @@ class FileFinder:
                         if not file or "sample" in file[self.filename_attr].lower():
                             continue
                         return_files.append(file)
-            else:
-                not_matched_episodes = needed_episodes_set - matched_files.keys()
                                     
         if item.type == "season":
             acceptable_states = [States.Indexed, States.Scraped, States.Unknown, States.Failed, States.PartiallyCompleted]

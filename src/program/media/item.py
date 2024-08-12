@@ -148,7 +148,8 @@ class MediaItem(db.Model):
     @property
     def is_released_nolog(self):
         """Check if an item has been released."""
-        if not self.aired_at:
+        now = datetime.now()
+        if not self.aired_at or self.aired_at > now:
             return False
         return True
 
