@@ -8,6 +8,8 @@ from ..media import States
 
 
 class Downloader:
+    failed_items = []
+
     def __init__(self):
         self.key = "downloader"
         self.initialized = False
@@ -30,5 +32,10 @@ class Downloader:
         return len(initialized_services) == 1
 
     def run(self, item: MediaItem):
-        self.service.run(item)
+        if not self.service.run(item):
+            self.failed_items.append(item)
         yield item
+
+    @staticmethod
+    def should_submit(item: MediaItem) -> bool:
+        return item not in Downloader.failed_items
